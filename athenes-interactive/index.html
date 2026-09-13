@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athènes Antique - Carte Interactive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f1ea;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { color: #5a3d28; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 20px; }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            background-color: #e3d3b4;
+            border: 3px solid #8b5a2b;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .pin {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .pin:hover {
+            transform: scale(1.15);
+        }
+
+        #info-box {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background-color: #fffdf8;
+            border: 2px solid #8b5a2b;
+            border-radius: 8px;
+            width: 90%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b5a2b;
+            margin-bottom: 5px;
+        }
+
+        .info-type {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Athènes Antique (Vᵉ siècle av. J.-C.)</h1>
+        <p>Clique sur un chiffre pour afficher la fiche du lieu.</p>
+
+        <svg viewBox="0 0 800 500">
+            <!-- Mer Égée -->
+            <path d="M 0 350 Q 200 300 400 400 T 800 380 L 800 500 L 0 500 Z" fill="#71b1d9" />
+            <text x="150" y="450" fill="#ffffff" font-size="20" font-weight="bold">Mer Égée</text>
+
+            <!-- Longs Murs -->
+            <line x1="220" y1="360" x2="480" y2="210" stroke="#7f8c8d" stroke-width="5" stroke-dasharray="6,4" />
+            <line x1="235" y1="375" x2="495" y2="225" stroke="#7f8c8d" stroke-width="5" stroke-dasharray="6,4" />
+
+            <!-- Repère 1 : Le Pirée -->
+            <g class="pin" onclick="showInfo('Pirée')" transform="translate(210, 360)">
+                <circle r="16" fill="#c0392b" />
+                <text x="0" y="5" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">1</text>
+                <text x="0" y="32" fill="#2c3e50" font-size="13" font-weight="bold" text-anchor="middle">Le Pirée</text>
+            </g>
+
+            <!-- Repère 2 : L'Acropole -->
+            <g class="pin" onclick="showInfo('Acropole')" transform="translate(520, 220)">
+                <circle r="16" fill="#c0392b" />
+                <text x="0" y="5" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">2</text>
+                <text x="0" y="-22" fill="#2c3e50" font-size="13" font-weight="bold" text-anchor="middle">L'Acropole</text>
+            </g>
+
+            <!-- Repère 3 : L'Agora -->
+            <g class="pin" onclick="showInfo('Agora')" transform="translate(480, 160)">
+                <circle r="16" fill="#c0392b" />
+                <text x="0" y="5" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">3</text>
+                <text x="-45" y="5" fill="#2c3e50" font-size="13" font-weight="bold" text-anchor="middle">L'Agora</text>
+            </g>
+
+            <!-- Repère 4 : La Pnyx -->
+            <g class="pin" onclick="showInfo('Pnyx')" transform="translate(440, 240)">
+                <circle r="16" fill="#c0392b" />
+                <text x="0" y="5" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">4</text>
+                <text x="0" y="32" fill="#2c3e50" font-size="13" font-weight="bold" text-anchor="middle">La Pnyx</text>
+            </g>
+        </svg>
+
+        <div id="info-box">
+            <div class="info-title" id="info-title">Clique sur un numéro de la carte</div>
+            <div class="info-type" id="info-type">Les détails du lieu s'afficheront ici.</div>
+            <div id="info-desc">Sélectionne un repère rouge pour réviser la fonction de chaque endroit d'Athènes.</div>
+        </div>
+    </div>
+
+    <script>
+        const donnees = {
+            'Acropole': {
+                titre: "2. L'Acropole et le Parthénon",
+                type: "Centre Religieux",
+                desc: "Colline sacrée dominant la cité. Elle abrite le Parthénon, temple dédié à la déesse Athéna. Symbole du pouvoir et du rayonnement culturel d'Athènes sous Périclès."
+            },
+            'Agora': {
+                titre: "3. L'Agora",
+                type: "Centre Politique & Commercial",
+                desc: "Grande place publique située au pied de l'Acropole. C'est le cœur de la vie quotidienne, du commerce et des rassemblements."
+            },
+            'Pnyx': {
+                titre: "4. La Pnyx",
+                type: "Centre Politique (Démocratie)",
+                desc: "Colline où se réunit l'Ecclésia (l'assemblée des citoyens). Les citoyens y débattent, votent les lois, décident de la guerre et pratiquent l'ostracisme."
+            },
+            'Pirée': {
+                titre: "1. Le Port du Pirée",
+                type: "Centre Maritime & Militaire",
+                desc: "Port fortifié relié à Athènes par les Longs Murs. Il abrite les trières (navires de guerre) et assure la puissance maritime (thalassocratie) d'Athènes."
+            }
+        };
+
+        function showInfo(lieuKey) {
+            const lieu = donnees[lieuKey];
+            document.getElementById('info-title').innerText = lieu.titre;
+            document.getElementById('info-type').innerText = "Rôle : " + lieu.type;
+            document.getElementById('info-desc').innerText = lieu.desc;
+        }
+    </script>
+</body>
+</html>
